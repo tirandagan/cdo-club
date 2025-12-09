@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import MermaidDiagram from './components/MermaidDiagram';
 import SeedIdeas from './components/SeedIdeas';
+import ReactMarkdown from 'react-markdown';
 
 function App() {
   const [selectedItem, setSelectedItem] = useState('documentation');
+  const [markdownContent, setMarkdownContent] = useState('');
+
+  useEffect(() => {
+    // Load markdown content when component mounts
+    fetch('/public/CDO_Club_Website_Analysis_Report.md')
+      .then(response => response.text())
+      .then(text => setMarkdownContent(text))
+      .catch(error => console.error('Error loading markdown:', error));
+  }, []);
 
   const menuItems = [
     { id: 'documentation', label: 'CDO Club Site Documentation' },
@@ -76,10 +86,12 @@ function App() {
     switch (selectedItem) {
       case 'documentation':
         return (
-          <div className="page-content">
-            <h2>CDO Club Site Documentation</h2>
-            <p>Welcome to the CDO Club documentation portal.</p>
-            <p>Here you can find comprehensive information about the CDO Club website, its features, and implementation details.</p>
+          <div className="page-content markdown-content">
+            {markdownContent ? (
+              <ReactMarkdown>{markdownContent}</ReactMarkdown>
+            ) : (
+              <p>Loading documentation...</p>
+            )}
           </div>
         );
       case 'structure':
@@ -110,7 +122,11 @@ function App() {
         return (
           <div className="page-content">
             <h2>Contact</h2>
-            <p>Contact information goes here.</p>
+            <div style={{ lineHeight: '1.8', fontSize: '1.1rem' }}>
+              <p><strong>Tiran Dagan</strong></p>
+              <p>Principal Advisor, SignalSphere.net</p>
+              <p>Mobile: 908-873-2425</p>
+            </div>
           </div>
         );
       default:
