@@ -126,15 +126,47 @@
   justify-content: center;
   gap: 4px;
   transition: all 0.3s ease;
+  animation: fadeInBounce 1s ease-out 0.5s both, pulse 2s ease-in-out 1.5s 3;
 }
 
 .toc-mobile-toggle:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5);
+  animation: none; /* Stop pulsing on hover */
 }
 
 .toc-mobile-toggle:active {
   transform: scale(0.95);
+}
+
+/* Attention-grabbing animations */
+@keyframes fadeInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2) translateY(0);
+  }
+  80% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6), 0 0 0 8px rgba(79, 70, 229, 0.1);
+  }
 }
 
 .toc-mobile-toggle svg {

@@ -77,7 +77,7 @@ function TableOfContents({ markdownContent }) {
       const yOffset = -80; // Offset for fixed navbar
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
-      setIsOpen(false); // Close TOC on mobile after clicking
+      // Don't close TOC after clicking - let user continue browsing
     }
   };
 
