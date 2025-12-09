@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import MermaidDiagram from './components/MermaidDiagram';
 import SeedIdeas from './components/SeedIdeas';
 import IntakeQuestions from './components/IntakeQuestions';
+import TableOfContents from './components/TableOfContents';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -87,13 +88,16 @@ function App() {
     switch (selectedItem) {
       case 'documentation':
         return (
-          <div className="page-content markdown-content">
-            {markdownContent ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownContent}</ReactMarkdown>
-            ) : (
-              <p>Loading documentation...</p>
-            )}
-          </div>
+          <>
+            <TableOfContents markdownContent={markdownContent} />
+            <div className="page-content markdown-content">
+              {markdownContent ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownContent}</ReactMarkdown>
+              ) : (
+                <p>Loading documentation...</p>
+              )}
+            </div>
+          </>
         );
       case 'structure':
         return (

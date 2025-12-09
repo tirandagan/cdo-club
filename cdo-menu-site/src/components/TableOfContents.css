@@ -1,0 +1,157 @@
+.toc-container {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  width: 240px;
+  max-height: calc(100vh - 120px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  transition: opacity 0.3s ease;
+}
+
+.toc-header {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #4F46E5;
+  border-bottom: 1px solid #e0e0e0;
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.toc-nav {
+  overflow-y: auto;
+  max-height: calc(100vh - 170px);
+  padding: 8px 0;
+}
+
+/* Custom scrollbar */
+.toc-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.toc-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc-nav::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+.toc-nav::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+.toc-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 6px 16px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-link:hover {
+  background: rgba(79, 70, 229, 0.05);
+  color: #4F46E5;
+}
+
+.toc-link.active {
+  color: #4F46E5;
+  font-weight: 600;
+  background: rgba(79, 70, 229, 0.1);
+  border-left-color: #4F46E5;
+}
+
+/* Hierarchy levels */
+.toc-level-1 {
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 16px;
+  margin-top: 8px;
+  color: #333;
+}
+
+.toc-level-2 {
+  padding-left: 24px;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.toc-level-3 {
+  padding-left: 36px;
+  font-size: 10px;
+  color: #888;
+  margin-top: 1px;
+}
+
+/* First item doesn't need top margin */
+.toc-link:first-child {
+  margin-top: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1400px) {
+  .toc-container {
+    width: 200px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .toc-container {
+    display: none;
+  }
+}
+
+/* Hover effect for container */
+.toc-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Animation for active state */
+.toc-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, #4F46E5 0%, #7C3AED 100%);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+/* Focus styles for accessibility */
+.toc-link:focus {
+  outline: 2px solid #4F46E5;
+  outline-offset: -2px;
+}
+
+.toc-link:focus:not(:focus-visible) {
+  outline: none;
+}
+
