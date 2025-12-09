@@ -3,6 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import MermaidDiagram from './components/MermaidDiagram';
 import SeedIdeas from './components/SeedIdeas';
+import IntakeQuestions from './components/IntakeQuestions';
 import ReactMarkdown from 'react-markdown';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     { id: 'documentation', label: 'CDO Club Site Documentation' },
     { id: 'structure', label: 'Site Structure' },
     { id: 'seed-ideas', label: 'Seed Ideas 💡' },
+    { id: 'intake-questions', label: 'Intake Questions 📋' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -102,6 +104,8 @@ function App() {
         );
       case 'seed-ideas':
         return <SeedIdeas />;
+      case 'intake-questions':
+        return <IntakeQuestions />;
       case 'contact':
         return (
           <div className="page-content contact-page">
