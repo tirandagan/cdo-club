@@ -338,7 +338,53 @@ Explanation: Remove vercel.json to use dashboard configuration instead
 ---
 
 <think><details><summary>Thought Process</summary>
-Now I need to push this change and give clear</details></think>
+Now I need to push this change and give clear instructions for the Vercel dashboard.</details></think>
+
+---
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_cmd">
+<details><summary>Tool use: **run_terminal_cmd** • Run command: cd /home/tiran/cdoclub && git add -A && git commit -m "Remove vercel.json - configure via dashboard instead" && git push</summary>
+
+```bash
+cd /home/tiran/cdoclub && git add -A && git commit -m "Remove vercel.json - configure via dashboard instead" && git push
+```
+
+```
+[main 5efac61] Remove vercel.json - configure via dashboard instead
+ 3 files changed, 628 insertions(+), 13 deletions(-)
+ delete mode 100644 vercel.json
+To https://github.com/tirandagan/cdo-club.git
+   c20edf2..5efac61  main -&gt; main
+
+```
+</details>
+</tool-use>
+
+---
+
+<think><details><summary>Thought Process</summary>
+Good, the vercel.json has been removed and pushed. Now I need to give clear instructions for configuring Vercel via the dashboard.</details></think>
+
+---
+
+Perfect. Now configure your Vercel project:
+
+## Vercel Dashboard Configuration:
+
+1. Go to your project on **vercel.com**
+2. Click **Settings** → **General**
+3. Find **Root Directory** section
+4. Click **Edit** and enter: `cdo-menu-site`
+5. Click **Save**
+6. Under **Build & Development Settings**:
+   - **Framework Preset**: Select "**Vite**"
+   - **Build Command**: `npm run build` (should auto-fill)
+   - **Output Directory**: `dist` (should auto-fill)
+   - **Install Command**: `npm install` (should auto-fill)
+
+7. Go to **Deployments** and click **Redeploy** on the latest deployment
+
+This will tell Vercel to treat `cdo-menu-site` as the project root and use Vite's build system. The deployment should succeed now.
 
 ---
 
