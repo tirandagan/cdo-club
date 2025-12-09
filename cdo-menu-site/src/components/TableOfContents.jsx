@@ -4,6 +4,7 @@ import './TableOfContents.css';
 function TableOfContents({ markdownContent }) {
   const [headings, setHeadings] = useState([]);
   const [activeId, setActiveId] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   // Extract headings from markdown
   useEffect(() => {
@@ -76,29 +77,62 @@ function TableOfContents({ markdownContent }) {
       const yOffset = -80; // Offset for fixed navbar
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
+      setIsOpen(false); // Close TOC on mobile after clicking
     }
   };
 
   if (headings.length === 0) return null;
 
   return (
-    <div className="toc-container">
-      <div className="toc-header">Contents</div>
-      <nav className="toc-nav">
-        {headings.map((heading, index) => (
-          <button
-            key={index}
-            className={`toc-link toc-level-${heading.level} ${
-              activeId === heading.id ? 'active' : ''
-            }`}
-            onClick={() => scrollToHeading(heading.text)}
-            title={heading.text}
+    <>
+      {/* Mobile Toggle Button */}
+      <button 
+        className="toc-mobile-toggle"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle table of contents"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+        </svg>
+        <span>Contents</span>
+      </button>
+
+      {/* TOC Container */}
+      <div className={`toc-container ${isOpen ? 'toc-open' : ''}`}>
+        <div className="toc-header">
+          <span>Contents</span>
+          <button 
+            className="toc-close"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close table of contents"
           >
-            {heading.text}
+            ×
           </button>
-        ))}
-      </nav>
-    </div>
+        </div>
+        <nav className="toc-nav">
+          {headings.map((heading, index) => (
+            <button
+              key={index}
+              className={`toc-link toc-level-${heading.level} ${
+                activeId === heading.id ? 'active' : ''
+              }`}
+              onClick={() => scrollToHeading(heading.text)}
+              title={heading.text}
+            >
+              {heading.text}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="toc-overlay"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+    </>
   );
 }
 
