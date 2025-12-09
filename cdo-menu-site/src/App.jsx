@@ -21,7 +21,7 @@ function App() {
   }, []);
 
   const menuItems = [
-    { id: 'documentation', label: 'CDO Club Site Documentation' },
+    { id: 'documentation', label: 'Site' },
     { id: 'structure', label: 'Site Structure' },
     { id: 'seed-ideas', label: 'Seed Ideas 💡' },
     { id: 'intake-questions', label: 'Intake Questions 📋' },

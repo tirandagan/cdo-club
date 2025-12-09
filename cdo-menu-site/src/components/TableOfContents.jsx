@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './TableOfContents.css';
 
 function TableOfContents({ markdownContent }) {
   const [headings, setHeadings] = useState([]);
   const [activeId, setActiveId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const tocRef = useRef(null);
+  const toggleRef = useRef(null);
 
   // Extract headings from markdown
   useEffect(() => {
@@ -77,17 +79,31 @@ function TableOfContents({ markdownContent }) {
       const yOffset = -80; // Offset for fixed navbar
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
-      // Don't close TOC after clicking - let user continue browsing
     }
   };
 
   if (headings.length === 0) return null;
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const handleClickOutside = (event) => {
+      const target = event.target;
+      if (tocRef.current?.contains(target)) return;
+      if (toggleRef.current?.contains(target)) return;
+      setIsOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   return (
     <>
       {/* Mobile Toggle Button */}
       <button 
         className="toc-mobile-toggle"
+        ref={toggleRef}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle table of contents"
       >
@@ -98,7 +114,7 @@ function TableOfContents({ markdownContent }) {
       </button>
 
       {/* TOC Container */}
-      <div className={`toc-container ${isOpen ? 'toc-open' : ''}`}>
+      <div ref={tocRef} className={`toc-container ${isOpen ? 'toc-open' : ''}`}>
         <div className="toc-header">
           <span>Contents</span>
           <button 
@@ -128,7 +144,7 @@ function TableOfContents({ markdownContent }) {
       {/* Overlay for mobile */}
       {isOpen && (
         <div 
-          className="toc-overlay"
+          className="toc-overlay visible"
           onClick={() => setIsOpen(false)}
         />
       )}
