@@ -38,6 +38,19 @@
 .markdown-content {
   line-height: 1.7;
   max-width: 100%;
+  padding-right: 280px; /* Space for TOC */
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll margin for headings to account for fixed navbar */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  scroll-margin-top: 100px;
 }
 
 .markdown-content h1 {
@@ -397,10 +410,20 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .markdown-content {
+    padding-right: 2rem; /* Remove TOC space on tablets/mobile */
+  }
+}
+
 @media (max-width: 768px) {
   .page-content {
     padding: 2rem 1.5rem;
     min-height: calc(100vh - 140px);
+  }
+  
+  .markdown-content {
+    padding-right: 1.5rem;
   }
 
   .page-content h2 {
@@ -461,6 +484,10 @@
 @media (max-width: 480px) {
   .page-content {
     padding: 1.5rem 1rem;
+  }
+  
+  .markdown-content {
+    padding-right: 1rem;
   }
 
   .page-content h2 {
