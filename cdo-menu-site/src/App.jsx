@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     // Load markdown content when component mounts
-    fetch('/public/CDO_Club_Website_Analysis_Report.md')
+    fetch('/CDO_Club_Website_Analysis_Report.md')
       .then(response => response.text())
       .then(text => setMarkdownContent(text))
       .catch(error => console.error('Error loading markdown:', error));
