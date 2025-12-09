@@ -290,35 +290,33 @@ const SeedIdeas = () => {
 
   return (
     <div className="seed-ideas">
-      <header className="seed-header">
-        <div className="header-content">
-          <h1>
-            <span className="icon-burst">💡</span>
-            Innovation Seed Ideas
-          </h1>
-          <p className="subtitle">
-            Six transformative monetization strategies leveraging CDO Club's unique assets
-          </p>
-          <div className="stats-bar">
-            <div className="stat">
-              <span className="stat-value">100,000+</span>
-              <span className="stat-label">C-Suite Members</span>
-            </div>
-            <div className="stat">
-              <span className="stat-value">$1B+</span>
-              <span className="stat-label">Influence Engine</span>
-            </div>
-            <div className="stat">
-              <span className="stat-value">14 Years</span>
-              <span className="stat-label">Proprietary Data</span>
-            </div>
-            <div className="stat">
-              <span className="stat-value">$180M+</span>
-              <span className="stat-label">Combined Revenue Potential</span>
-            </div>
+      <div className="seed-intro">
+        <h1 className="seed-title">
+          <span className="icon-burst">💡</span>
+          Innovation Seed Ideas
+        </h1>
+        <p className="seed-subtitle">
+          Six transformative monetization strategies leveraging CDO Club's unique assets
+        </p>
+        <div className="stats-bar">
+          <div className="stat">
+            <span className="stat-value">100,000+</span>
+            <span className="stat-label">C-Suite Members</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">$1B+</span>
+            <span className="stat-label">Influence Engine</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">14 Years</span>
+            <span className="stat-label">Proprietary Data</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">$180M+</span>
+            <span className="stat-label">Combined Revenue Potential</span>
           </div>
         </div>
-      </header>
+      </div>
 
       <div className="ideas-grid">
         {ideas.map((idea, index) => (

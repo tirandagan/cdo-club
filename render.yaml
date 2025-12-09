@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: cdo-club
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: cdo-menu-site
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+

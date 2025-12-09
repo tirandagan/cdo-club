@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
+import Navbar from './components/Navbar';
 import MermaidDiagram from './components/MermaidDiagram';
+import SeedIdeas from './components/SeedIdeas';
 
 function App() {
   const [selectedItem, setSelectedItem] = useState('documentation');
@@ -8,6 +10,7 @@ function App() {
   const menuItems = [
     { id: 'documentation', label: 'CDO Club Site Documentation' },
     { id: 'structure', label: 'Site Structure' },
+    { id: 'seed-ideas', label: 'Seed Ideas 💡' },
     { id: 'overview', label: 'Overview' },
     { id: 'resources', label: 'Resources' },
     { id: 'contact', label: 'Contact' },
@@ -73,7 +76,7 @@ function App() {
     switch (selectedItem) {
       case 'documentation':
         return (
-          <div>
+          <div className="page-content">
             <h2>CDO Club Site Documentation</h2>
             <p>Welcome to the CDO Club documentation portal.</p>
             <p>Here you can find comprehensive information about the CDO Club website, its features, and implementation details.</p>
@@ -81,29 +84,31 @@ function App() {
         );
       case 'structure':
         return (
-          <div>
+          <div className="page-content">
             <h2>Site Structure</h2>
             <p>Interactive diagram showing the complete CDO Club website structure and navigation hierarchy.</p>
             <MermaidDiagram chart={mermaidChart} />
           </div>
         );
+      case 'seed-ideas':
+        return <SeedIdeas />;
       case 'overview':
         return (
-          <div>
+          <div className="page-content">
             <h2>Overview</h2>
             <p>Overview content goes here.</p>
           </div>
         );
       case 'resources':
         return (
-          <div>
+          <div className="page-content">
             <h2>Resources</h2>
             <p>Resources content goes here.</p>
           </div>
         );
       case 'contact':
         return (
-          <div>
+          <div className="page-content">
             <h2>Contact</h2>
             <p>Contact information goes here.</p>
           </div>
@@ -115,25 +120,12 @@ function App() {
 
   return (
     <div className="app">
-      <header className="header">
-        <h1>CDO Club</h1>
-      </header>
-      <div className="container">
-        <nav className="menu">
-          <ul>
-            {menuItems.map((item) => (
-              <li
-                key={item.id}
-                className={selectedItem === item.id ? 'active' : ''}
-                onClick={() => setSelectedItem(item.id)}
-              >
-                {item.label}
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <main className="content">{renderContent()}</main>
-      </div>
+      <Navbar 
+        selectedItem={selectedItem}
+        onItemSelect={setSelectedItem}
+        menuItems={menuItems}
+      />
+      <main className="content">{renderContent()}</main>
     </div>
   );
 }

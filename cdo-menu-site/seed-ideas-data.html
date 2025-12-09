@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDO Club - Seed Ideas Data Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-comparison {
+            margin-bottom: 2rem;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: 40px 200px 1fr 60px;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-icon {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .metric-bar-container {
+            height: 30px;
+            background: #f3f4f6;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-bar {
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fillBar 1.5s ease-out;
+        }
+
+        @keyframes fillBar {
+            from { width: 0%; }
+        }
+
+        .metric-score {
+            font-weight: 700;
+            color: #1f2937;
+            text-align: right;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .summary-card:nth-child(1) { animation-delay: 0s; }
+        .summary-card:nth-child(2) { animation-delay: 0.1s; }
+        .summary-card:nth-child(3) { animation-delay: 0.2s; }
+        .summary-card:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .ranking-table {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 80px;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 80px;
+            gap: 1rem;
+            padding: 1.25rem 1rem;
+            align-items: center;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .table-row:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .rank {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        }
+
+        .idea-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .score-cell {
+            text-align: center;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .total-score {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            margin: 0 auto;
+        }
+
+        .revenue-potential {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .revenue-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .revenue-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .revenue-label {
+            width: 300px;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .revenue-bar-outer {
+            flex: 1;
+            height: 40px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .revenue-bar-inner {
+            height: 100%;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding-left: 1rem;
+            color: white;
+            font-weight: 700;
+            animation: fillBar 2s ease-out;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-weight: 600;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 Seed Ideas: Data Comparison</h1>
+        <p class="subtitle">Comprehensive analysis of six monetization strategies for CDO Club</p>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="summary-icon">🎯</div>
+                <div class="summary-value">6</div>
+                <div class="summary-label">Strategic Initiatives</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">📊</div>
+                <div class="summary-value">42.8</div>
+                <div class="summary-label">Average Score (out of 50)</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">💰</div>
+                <div class="summary-value">$180M+</div>
+                <div class="summary-label">Combined Revenue Potential</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon">🚀</div>
+                <div class="summary-value">60-90</div>
+                <div class="summary-label">Days to Launch (Fastest)</div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                <div class="legend-text">💎 Benchmarking Platform</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #84fab0, #8fd3f4);"></div>
+                <div class="legend-text">🤝 Peer Advisory Boards</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                <div class="legend-text">📊 Intelligence Command Center</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+                <div class="legend-text">🔗 Vendor Matchmaking</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #a8edea, #fed6e3);"></div>
+                <div class="legend-text">🚀 Accelerator Program</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #30cfd0, #330867);"></div>
+                <div class="legend-text">🎓 Certification Program</div>
+            </div>
+        </div>
+
+        <!-- Comparison Grid -->
+        <div class="comparison-grid">
+            <!-- Revenue Score Comparison -->
+            <div class="chart-card">
+                <h3 class="chart-title">💰 Revenue Score Comparison</h3>
+                <div class="metric-comparison">
+                    <div class="metric-row">
+                        <div class="metric-icon">💎</div>
+                        <div class="metric-name">Benchmarking Platform</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-name">Intelligence Center</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🔗</div>
+                        <div class="metric-name">Vendor Matchmaking</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #fa709a, #fee140);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🎓</div>
+                        <div class="metric-name">Certification Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #30cfd0, #330867);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-name">Accelerator Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🤝</div>
+                        <div class="metric-name">Peer Advisory Boards</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 80%; background: linear-gradient(135deg, #84fab0, #8fd3f4);">
+                                8/10
+                            </div>
+                        </div>
+                        <div class="metric-score">8</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scalability Comparison -->
+            <div class="chart-card">
+                <h3 class="chart-title">📈 Scalability Comparison</h3>
+                <div class="metric-comparison">
+                    <div class="metric-row">
+                        <div class="metric-icon">💎</div>
+                        <div class="metric-name">Benchmarking Platform</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🔗</div>
+                        <div class="metric-name">Vendor Matchmaking</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #fa709a, #fee140);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🎓</div>
+                        <div class="metric-name">Certification Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #30cfd0, #330867);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-name">Intelligence Center</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🤝</div>
+                        <div class="metric-name">Peer Advisory Boards</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 60%; background: linear-gradient(135deg, #84fab0, #8fd3f4);">
+                                6/10
+                            </div>
+                        </div>
+                        <div class="metric-score">6</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-name">Accelerator Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 50%; background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                5/10
+                            </div>
+                        </div>
+                        <div class="metric-score">5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time to Market Comparison -->
+            <div class="chart-card">
+                <h3 class="chart-title">⚡ Time to Market (Speed)</h3>
+                <div class="metric-comparison">
+                    <div class="metric-row">
+                        <div class="metric-icon">🤝</div>
+                        <div class="metric-name">Peer Advisory Boards</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #84fab0, #8fd3f4);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-name">Accelerator Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 80%; background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                8/10
+                            </div>
+                        </div>
+                        <div class="metric-score">8</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🔗</div>
+                        <div class="metric-name">Vendor Matchmaking</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 80%; background: linear-gradient(135deg, #fa709a, #fee140);">
+                                8/10
+                            </div>
+                        </div>
+                        <div class="metric-score">8</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-name">Intelligence Center</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 70%; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                                7/10
+                            </div>
+                        </div>
+                        <div class="metric-score">7</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🎓</div>
+                        <div class="metric-name">Certification Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 70%; background: linear-gradient(135deg, #30cfd0, #330867);">
+                                7/10
+                            </div>
+                        </div>
+                        <div class="metric-score">7</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">💎</div>
+                        <div class="metric-name">Benchmarking Platform</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 60%; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                6/10
+                            </div>
+                        </div>
+                        <div class="metric-score">6</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moat Strength Comparison -->
+            <div class="chart-card">
+                <h3 class="chart-title">🏰 Moat Strength (Defensibility)</h3>
+                <div class="metric-comparison">
+                    <div class="metric-row">
+                        <div class="metric-icon">💎</div>
+                        <div class="metric-name">Benchmarking Platform</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                10/10
+                            </div>
+                        </div>
+                        <div class="metric-score">10</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-name">Intelligence Center</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🎓</div>
+                        <div class="metric-name">Certification Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 90%; background: linear-gradient(135deg, #30cfd0, #330867);">
+                                9/10
+                            </div>
+                        </div>
+                        <div class="metric-score">9</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🤝</div>
+                        <div class="metric-name">Peer Advisory Boards</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 80%; background: linear-gradient(135deg, #84fab0, #8fd3f4);">
+                                8/10
+                            </div>
+                        </div>
+                        <div class="metric-score">8</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-name">Accelerator Program</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 80%; background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                8/10
+                            </div>
+                        </div>
+                        <div class="metric-score">8</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">🔗</div>
+                        <div class="metric-name">Vendor Matchmaking</div>
+                        <div class="metric-bar-container">
+                            <div class="metric-bar" style="width: 70%; background: linear-gradient(135deg, #fa709a, #fee140);">
+                                7/10
+                            </div>
+                        </div>
+                        <div class="metric-score">7</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Rankings Table -->
+        <div class="ranking-table">
+            <h3 class="chart-title">🏆 Overall Rankings (Total Score)</h3>
+            <div class="table-header">
+                <div>Rank</div>
+                <div>Initiative</div>
+                <div>Revenue</div>
+                <div>Scale</div>
+                <div>Speed</div>
+                <div>Moat</div>
+                <div>Market</div>
+                <div>Total</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #667eea; --gradient-end: #764ba2;">
+                <div class="rank">#1</div>
+                <div class="idea-name">💎 Benchmarking Platform</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">6</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">9</div>
+                <div class="total-score">47</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #30cfd0; --gradient-end: #330867;">
+                <div class="rank">#2</div>
+                <div class="idea-name">🎓 Certification Program</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">7</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">10</div>
+                <div class="total-score">46</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #fa709a; --gradient-end: #fee140;">
+                <div class="rank">#3</div>
+                <div class="idea-name">🔗 Vendor Matchmaking</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">8</div>
+                <div class="score-cell">7</div>
+                <div class="score-cell">10</div>
+                <div class="total-score">44</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #f093fb; --gradient-end: #f5576c;">
+                <div class="rank">#4</div>
+                <div class="idea-name">📊 Intelligence Center</div>
+                <div class="score-cell">10</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">7</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">8</div>
+                <div class="total-score">43</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #a8edea; --gradient-end: #fed6e3;">
+                <div class="rank">#5</div>
+                <div class="idea-name">🚀 Accelerator Program</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">5</div>
+                <div class="score-cell">8</div>
+                <div class="score-cell">8</div>
+                <div class="score-cell">9</div>
+                <div class="total-score">39</div>
+            </div>
+            <div class="table-row" style="--gradient-start: #84fab0; --gradient-end: #8fd3f4;">
+                <div class="rank">#6</div>
+                <div class="idea-name">🤝 Peer Advisory Boards</div>
+                <div class="score-cell">8</div>
+                <div class="score-cell">6</div>
+                <div class="score-cell">9</div>
+                <div class="score-cell">8</div>
+                <div class="score-cell">7</div>
+                <div class="total-score">38</div>
+            </div>
+        </div>
+
+        <!-- Revenue Potential Chart -->
+        <div class="revenue-potential">
+            <h3 class="chart-title">💰 Revenue Potential (Annual, at scale)</h3>
+            <div class="revenue-bars">
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>🔗</span> Vendor Matchmaking
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 100%; background: linear-gradient(135deg, #fa709a, #fee140);">
+                            $15M - $50M
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>🎓</span> Certification Program
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 100%; background: linear-gradient(135deg, #30cfd0, #330867);">
+                            $20M - $50M
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>📊</span> Intelligence Command Center
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 60%; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            $10M - $30M
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>💎</span> Benchmarking Platform
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 50%; background: linear-gradient(135deg, #667eea, #764ba2);">
+                            $5M - $25M
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>🚀</span> Accelerator Program
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 30%; background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                            $5M - $15M
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-row">
+                    <div class="revenue-label">
+                        <span>🤝</span> Peer Advisory Boards
+                    </div>
+                    <div class="revenue-bar-outer">
+                        <div class="revenue-bar-inner" style="width: 20%; background: linear-gradient(135deg, #84fab0, #8fd3f4);">
+                            $2M - $10M
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

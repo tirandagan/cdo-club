@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigate to Seed Ideas</title>
+    <script>
+        setTimeout(() => {
+            const menuItems = document.querySelectorAll('.menu li');
+            menuItems.forEach(item => {
+                if (item.textContent.includes('Seed Ideas')) {
+                    item.click();
+                }
+            });
+        }, 1000);
+    </script>
+</head>
+<body>
+    <iframe src="http://localhost:3001/" width="100%" height="1000px"></iframe>
+</body>
+</html>
