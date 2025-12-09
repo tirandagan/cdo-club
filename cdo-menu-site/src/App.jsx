@@ -5,6 +5,7 @@ import MermaidDiagram from './components/MermaidDiagram';
 import SeedIdeas from './components/SeedIdeas';
 import IntakeQuestions from './components/IntakeQuestions';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 function App() {
   const [selectedItem, setSelectedItem] = useState('documentation');
@@ -88,7 +89,7 @@ function App() {
         return (
           <div className="page-content markdown-content">
             {markdownContent ? (
-              <ReactMarkdown>{markdownContent}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownContent}</ReactMarkdown>
             ) : (
               <p>Loading documentation...</p>
             )}
