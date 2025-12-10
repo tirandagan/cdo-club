@@ -206,10 +206,10 @@
     right: -75px; /* Fully hidden behind TOC */
   }
   35% {
-    right: -5px; /* Peek out with 5px still hidden */
+    right: 5px; /* Peek out more onto the page */
   }
   65% {
-    right: -5px; /* Hold position briefly */
+    right: 5px; /* Hold position briefly */
   }
   100% {
     right: -75px; /* Hide back behind TOC */
