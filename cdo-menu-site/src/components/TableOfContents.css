@@ -182,6 +182,40 @@
   line-height: 1;
 }
 
+/* David Mathison peek animation - masking container */
+.david-peek-mask {
+  position: fixed;
+  height: 75px;
+  right: 240px; /* TOC width on desktop */
+  left: 0;
+  overflow: hidden;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.david-peek {
+  position: absolute;
+  height: 100%;
+  width: auto;
+  right: -75px; /* Start hidden to the right of mask */
+  animation: davidPeek 1.2s ease-in-out forwards;
+}
+
+@keyframes davidPeek {
+  0% {
+    right: -75px; /* Fully hidden behind TOC */
+  }
+  35% {
+    right: -5px; /* Peek out with 5px still hidden */
+  }
+  65% {
+    right: -5px; /* Hold position briefly */
+  }
+  100% {
+    right: -75px; /* Hide back behind TOC */
+  }
+}
+
 /* Close button in header */
 .toc-close {
   display: none;

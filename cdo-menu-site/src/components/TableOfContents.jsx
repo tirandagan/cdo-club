@@ -7,6 +7,10 @@ function TableOfContents({ markdownContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const tocRef = useRef(null);
   const toggleRef = useRef(null);
+  const [photoTop, setPhotoTop] = useState('40%');
+  const [showDavid, setShowDavid] = useState(false);
+  const [peekTranslate, setPeekTranslate] = useState(-280 + 5);
+  const animationTimerRef = useRef(null);
 
   // Extract headings from markdown
   useEffect(() => {
@@ -82,8 +86,6 @@ function TableOfContents({ markdownContent }) {
     }
   };
 
-  if (headings.length === 0) return null;
-
   useEffect(() => {
     if (!isOpen) return undefined;
 
@@ -97,6 +99,35 @@ function TableOfContents({ markdownContent }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
+
+  useEffect(() => {
+    animationTimerRef.current && clearTimeout(animationTimerRef.current);
+    if (!isOpen) {
+      setShowDavid(false);
+      return undefined;
+    }
+
+    const topPercent = Math.floor(Math.random() * 45) + 10;
+    setPhotoTop(`${topPercent}%`);
+    const tocWidth = tocRef.current?.offsetWidth || 280;
+    setPeekTranslate(-(tocWidth - 5));
+
+    // Trigger animation once per open
+    setShowDavid(false);
+    const showNextFrame = () => setShowDavid(true);
+    const raf = requestAnimationFrame(showNextFrame);
+
+    animationTimerRef.current = window.setTimeout(() => {
+      setShowDavid(false);
+    }, 1200);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      animationTimerRef.current && clearTimeout(animationTimerRef.current);
+    };
+  }, [isOpen]);
+
+  if (headings.length === 0) return null;
 
   return (
     <>
@@ -147,6 +178,22 @@ function TableOfContents({ markdownContent }) {
           className="toc-overlay visible"
           onClick={() => setIsOpen(false)}
         />
+      )}
+      
+      {/* David peek container - masks image to only show when peeking */}
+      {isOpen && (
+        <div
+          className="david-peek-mask"
+          style={{ top: photoTop }}
+        >
+          {showDavid && (
+            <img 
+              src="/david.png" 
+              alt="David Mathison"
+              className="david-peek"
+            />
+          )}
+        </div>
       )}
     </>
   );
